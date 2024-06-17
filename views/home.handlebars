@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Latest Processed Posts</title>
+    <style>
+        /* Optional: Add your custom CSS styles here */
+    </style>
+    <script>
+        // JavaScript for client-side polling
+        function fetchLatestPosts() {
+            fetch('/latest-posts')
+                .then(response => response.json())
+                .then(posts => {
+                    // Update the DOM with latest posts
+                    const postsList = document.getElementById('postsList');
+                    postsList.innerHTML = ''; // Clear existing posts
+                    posts.forEach(post => {
+                        const listItem = document.createElement('li');
+                        listItem.innerHTML = `
+                            <strong>Timestamp:</strong> ${post.timestamp}
+                            <strong>Created At:</strong> ${post.created_at}
+                            <strong>Type:</strong> ${post.type}
+                            <strong>Data Object:</strong> ${post.data_object}
+                            <strong>Parent FID:</strong> ${post.parent_fid}
+                            <strong>Author Object:</strong> ${post.author_object}
+                            <strong>Author FID:</strong> ${post.author_fid}
+                            <strong>Author Username:</strong> ${post.author_username}<br><br>
+                        `;
+                        postsList.appendChild(listItem);
+                    });
+                })
+                .catch(error => console.error('Error fetching latest posts:', error));
+        }
+
+        // Fetch latest posts every 5 seconds
+        setInterval(fetchLatestPosts, 5000);  
+    </script>
+</head>
+<body>
+    <h1>Latest Processed Posts</h1>
+
+    <ul id="postsList">
+        <!-- Posts will be dynamically added here -->
+    </ul>
+</body>
+</html>
