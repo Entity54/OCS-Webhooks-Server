@@ -15,18 +15,25 @@
                     // Update the DOM with latest posts
                     const postsList = document.getElementById('postsList');
                     postsList.innerHTML = ''; // Clear existing posts
+
+
                     posts.forEach(post => {
+
+                        let postElement = "";
+                        const postKeys = Object.keys(post);
+                        postKeys.forEach(key => {
+                            postElement += `<strong>${key}:</strong> ${post[key]} `;
+                        });
+
+
                         const listItem = document.createElement('li');
-                        listItem.innerHTML = `
-                            <strong>Timestamp:</strong> ${post.timestamp}
-                            <strong>Created At:</strong> ${post.created_at}
-                            <strong>Type:</strong> ${post.type}
-                            <strong>Data Object:</strong> ${post.data_object}
-                            <strong>Parent FID:</strong> ${post.parent_fid}
-                            <strong>Author Object:</strong> ${post.author_object}
-                            <strong>Author FID:</strong> ${post.author_fid}
-                            <strong>Author Username:</strong> ${post.author_username}<br><br>
-                        `;
+                        listItem.innerHTML = postElement;
+
+
+
+            
+
+
                         postsList.appendChild(listItem);
                     });
                 })
@@ -45,3 +52,18 @@
     </ul>
 </body>
 </html>
+
+
+
+
+
+           {{!-- listItem.innerHTML = `
+                            <strong>Timestamp:</strong> ${post.timestamp}
+                            <strong>Created At:</strong> ${post.created_at}
+                            <strong>Type:</strong> ${post.type}
+                            <strong>Data Object:</strong> ${post.data_object}
+                            <strong>Parent FID:</strong> ${post.parent_fid}
+                            <strong>Author Object:</strong> ${post.author_object}
+                            <strong>Author FID:</strong> ${post.author_fid}
+                            <strong>Author Username:</strong> ${post.author_username}<br><br>
+                        `; --}}
