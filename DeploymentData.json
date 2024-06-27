@@ -1,0 +1,106 @@
+{
+  "CampaignManager": {
+    "hardhat": {
+      "networkName": "hardhat",
+      "chainId": 31337,
+      "address": "",
+      "constructorArguments": [],
+      "value": "0",
+      "timestamp": ""
+    },
+    "base-sepolia": {
+      "networkName": "base-sepolia",
+      "chainId": 84532,
+      "address": "0x9b98daC2884676098d22c55991364b1d4517845a",
+      "constructorArguments": [],
+      "value": "0",
+      "timestamp": ""
+    },
+    "base": {
+      "networkName": "base",
+      "chainId": 8453,
+      "address": "0x9b98daC2884676098d22c55991364b1d4517845a",
+      "constructorArguments": [],
+      "value": "0",
+      "timestamp": ""
+    }
+  },
+  "InfuencersManager": {
+    "hardhat": {
+      "networkName": "hardhat",
+      "chainId": 31337,
+      "address": "",
+      "constructorArguments": [],
+      "value": "0",
+      "timestamp": ""
+    },
+    "base-sepolia": {
+      "networkName": "base-sepolia",
+      "chainId": 84532,
+      "address": "0x970C4bbFfCeED69EC3ff4b7D4a6848F561Ca993a",
+      "constructorArguments": [],
+      "value": "0",
+      "timestamp": ""
+    },
+    "base": {
+      "networkName": "base",
+      "chainId": 8453,
+      "address": "0x970C4bbFfCeED69EC3ff4b7D4a6848F561Ca993a",
+      "constructorArguments": [],
+      "value": "0",
+      "timestamp": ""
+    }
+  },
+  "CampaignAssets": {
+    "hardhat": {
+      "networkName": "hardhat",
+      "chainId": 31337,
+      "address": "",
+      "constructorArguments": [],
+      "value": "0",
+      "timestamp": ""
+    },
+    "base-sepolia": {
+      "networkName": "base-sepolia",
+      "chainId": 84532,
+      "address": "0xEb0052313DdEE0C670D5780406cAD7dD5017630b",
+      "constructorArguments": [],
+      "value": "0",
+      "timestamp": ""
+    },
+    "base": {
+      "networkName": "base",
+      "chainId": 8453,
+      "address": "0xEb0052313DdEE0C670D5780406cAD7dD5017630b",
+      "constructorArguments": [],
+      "value": "0",
+      "timestamp": ""
+    }
+  },
+  "SquawkProcessor": {
+    "hardhat": {
+      "networkName": "hardhat",
+      "chainId": 31337,
+      "address": "",
+      "constructorArguments": [],
+      "value": "0",
+      "timestamp": ""
+    },
+    "base-sepolia": {
+      "networkName": "base-sepolia",
+      "chainId": 84532,
+      "address": "0xb14B3838bfdb86618B302555D4b9BEd9480c12a8",
+      "constructorArguments": [],
+      "value": "0",
+      "timestamp": ""
+    },
+    "base": {
+      "networkName": "base",
+      "chainId": 8453,
+      "address": "0xb14B3838bfdb86618B302555D4b9BEd9480c12a8",
+      "constructorArguments": [],
+      "value": "0",
+      "timestamp": ""
+    }
+  }
+}
