@@ -255,11 +255,15 @@ const verifyWebhookSignature = async (body,sig) => {
     SquawkProcessor_admin   = chainObject.contracts.SquawkProcessor;
   }
    
+
+
   //Test
-  // const pendingCampaignUIDs = await getPendingCampaigns();
-  // console.log(`verifyWebhookSignature pendingCampaignUIDs: `,pendingCampaignUIDs);
-  await getSquawkBoxElementRange();
+  // const pendingCampaignUIDs = await getPendingCampaigns();  //DELETE ONLY FOr TESTING
+  // console.log(`verifyWebhookSignature pendingCampaignUIDs: `,pendingCampaignUIDs);  //DELETE ONLY FOr TESTING
+  // await getSquawkBoxElementRange();    //DELETE ONLY FOr TESTING
   
+
+
   console.log(`verifyWebhookSignature Moving on to analyseWebhookData`);
 
   const postActions = await analyseWebhookData(body);
@@ -275,21 +279,14 @@ const analyseWebhookData = async (body) => {
 
 
   //GET ACTIVE CAMPIGN FIDs
-  // const campaign_fids = await getActiveCampaignFIDs(); //For Live
-  const campaign_fids=[723628]; //Example For testing
-
-
-
-  const campaign_urls=["https://www.example3-dream-cars.com"
-  ,"https://www.example1-dream-cars.com","https://www.example5-dream-cars.com"]; //TODO get from sc
-  const campaign_taglines=["Yolo Dream Cars3","Yolo Dream Cars1","Yolo Dream Cars5"];//TODO get from sc
-  //TODO if for all cases I can get the infuencers fid for the specific campaign FID then I can credit the influencer with points
+  const campaign_fids = await getActiveCampaignFIDs(); //For Live
+  // const campaign_fids=[723628]; //Example For testing
  
 
   console.log(`Analysing POST body data body: `);  
 
   if (body.type === "cast.created") {
-    const { features, for_sc } = await handle_CastCreated(body.data, body.created_at, campaign_fids, campaign_urls ,campaign_taglines);
+    const { features, for_sc } = await handle_CastCreated(body.data, body.created_at, campaign_fids);
     if (for_sc.length>0)
     {
       // console.log(`CASE cast.created features: `,features);
@@ -367,8 +364,8 @@ const handle_Follow = async (data, created_at, campaign_fids) => {
   const user_followed = data.target_user.fid;
   
   //*** SC GET INFLUENCERS FOR CAMPAIGN FID  user_followed  
-  // const campaign_registered_infuencers_fids = await getCampaign_Infuencers_From_Fid(user_followed); //For Live
-  const campaign_registered_infuencers_fids = [620429]; //Example  For Testing
+  const campaign_registered_infuencers_fids = await getCampaign_Infuencers_From_Fid(user_followed); //For Live
+  // const campaign_registered_infuencers_fids = [620429]; //Example  For Testing
 
   const foundUserFIDIndex = campaign_registered_infuencers_fids.findIndex(fid => `${fid}`===`${user_fid}`);
   if (foundUserFIDIndex === -1) {
@@ -443,8 +440,8 @@ const handle_Unfollow = async (data, created_at, campaign_fids) => {
   const user_unfollowed = data.target_user.fid;
 
   //*** SC GET INFLUENCERS FOR CAMPAIGN FID  user_followed  
-  // const campaign_registered_infuencers_fids = await getCampaign_Infuencers_From_Fid(user_unfollowed); 
-  const campaign_registered_infuencers_fids = [620429]; //Example  
+  const campaign_registered_infuencers_fids = await getCampaign_Infuencers_From_Fid(user_unfollowed); 
+  // const campaign_registered_infuencers_fids = [620429]; //Example  
 
   const foundUserFIDIndex = campaign_registered_infuencers_fids.findIndex(fid => `${fid}`===`${user_fid}`);
   if (foundUserFIDIndex === -1) {
@@ -526,8 +523,8 @@ const handle_Reaction_Created = async (data, created_at, campaign_fids) => {
   const cast_author_fid = data.cast.author.fid;
 
   //*** SC GET INFLUENCERS FOR CAMPAIGN FID  user_followed  
-  // const campaign_registered_infuencers_fids = await getCampaign_Infuencers_From_Fid(cast_author_fid); 
-  const campaign_registered_infuencers_fids = [620429]; //Example  
+  const campaign_registered_infuencers_fids = await getCampaign_Infuencers_From_Fid(cast_author_fid); 
+  // const campaign_registered_infuencers_fids = [620429]; //Example  
 
   const foundUserFIDIndex = campaign_registered_infuencers_fids.findIndex(fid => `${fid}`===`${user_fid}`);
   if (foundUserFIDIndex === -1) {
@@ -611,8 +608,8 @@ const handle_Reaction_Deleted = async (data, created_at, campaign_fids) => {
   const cast_author_fid = data.cast.author.fid;
 
   //*** SC GET INFLUENCERS FOR CAMPAIGN FID  user_followed  
-  // const campaign_registered_infuencers_fids = await getCampaign_Infuencers_From_Fid(cast_author_fid); 
-  const campaign_registered_infuencers_fids = [620429]; //Example  
+  const campaign_registered_infuencers_fids = await getCampaign_Infuencers_From_Fid(cast_author_fid); 
+  // const campaign_registered_infuencers_fids = [620429]; //Example  
 
   const foundUserFIDIndex = campaign_registered_infuencers_fids.findIndex(fid => `${fid}`===`${user_fid}`);
   if (foundUserFIDIndex === -1) {
@@ -675,11 +672,20 @@ const handle_Reaction_Deleted = async (data, created_at, campaign_fids) => {
 
 
 //#region
-const handle_CastCreated = async (data, created_at, campaign_fids, campaign_urls, taglinesArray
-  // campaign_fids=[723628], 
-  // campaign_urls=["https://www.example3-dream-cars.com","https://www.example1-dream-cars.com","https://www.example5-dream-cars.com"], 
-  // taglinesArray=["Yolo Dream Cars3","Yolo Dream Cars1","Yolo Dream Cars5"]
-  ) => {
+const handle_CastCreated = async (data, created_at, campaign_fids ) => {
+    
+  //#region Get data from smart contracts 
+  const campaign_urls = await get_embeds(); //For Live
+  // const campaign_urls=["https://www.example3-dream-cars.com"
+  // ,"https://www.example1-dream-cars.com","https://www.example5-dream-cars.com"]; //Example For testing
+
+
+  const taglinesArray = await get_tagLines(); //For Live
+  // const taglinesArray=["Yolo Dream Cars3","Yolo Dream Cars1","Yolo Dream Cars5"]; //Example For testing
+  //#endregion
+
+
+
 
   console.log(`handle_CastCreated: New Cast Created ${created_at} data: `,data);
 
@@ -715,8 +721,8 @@ const handle_CastCreated = async (data, created_at, campaign_fids, campaign_urls
           console.log(`This is a reply and replyToAuthorFid: "${replyToAuthorFid}" appears in the campaign_fids at position ${foundIndex} in campaign_fids.`);
 
           //*** SC GET INFLUENCERS FOR CAMPAIGN FID     
-          // const campaign_registered_infuencers_fids = await getCampaign_Infuencers_From_Fid(replyToAuthorFid); 
-          const campaign_registered_infuencers_fids = [620429]; //Example  
+          const campaign_registered_infuencers_fids = await getCampaign_Infuencers_From_Fid(replyToAuthorFid); 
+          // const campaign_registered_infuencers_fids = [620429]; //Example  
 
           const foundUserFIDIndex = campaign_registered_infuencers_fids.findIndex(fid => `${fid}`===`${user_fid}`);
           if (foundUserFIDIndex !== -1) {
@@ -774,7 +780,7 @@ const handle_CastCreated = async (data, created_at, campaign_fids, campaign_urls
   // *** CASE 2 Embeds ***
   // const cast_embeds  = data.embeds; //'[]'
   //enforce infuencer to embed only 1 url if any  in the cast, the campaign company url
-  if (data.embeds.length === 1) {
+  if (data.embeds.length === 1 && campaign_urls.length>0) {
     const embedsArray = data.embeds;
     const embed = embedsArray[0].url;
 
@@ -837,8 +843,8 @@ const handle_CastCreated = async (data, created_at, campaign_fids, campaign_urls
         console.log(`The mentionedFid "${mentionedFid}" appears in the campaign_fids at position ${foundIndex} in campaign_fids.`);
 
         //*** SC GET INFLUENCERS FOR CAMPAIGN FID     
-        // const campaign_registered_infuencers_fids = await getCampaign_Infuencers_From_Fid(mentionedFid); 
-        const campaign_registered_infuencers_fids = [620429]; //Example  
+        const campaign_registered_infuencers_fids = await getCampaign_Infuencers_From_Fid(mentionedFid); 
+        // const campaign_registered_infuencers_fids = [620429]; //Example  
 
 
         const foundUserFIDIndex = campaign_registered_infuencers_fids.findIndex(fid => `${fid}`===`${user_fid}`);
@@ -944,50 +950,51 @@ const handle_CastCreated = async (data, created_at, campaign_fids, campaign_urls
   // EXAMPLE
   // let taglinesArray = ["Yolo Dream Cars3", "Yolo Dream Cars1", "Yolo Dream Cars5"];
   // let cast_text = "This is very true at 09:33 Yolo Dream Cars3";
+  if (taglinesArray.length > 0)
+  {
+      // Find the index of the element in taglinesArray that is included in the cast_text
+      let foundIndex = taglinesArray.findIndex(tagline => cast_text.includes(tagline));
 
-  // Find the index of the element in taglinesArray that is included in the cast_text
-  let foundIndex = taglinesArray.findIndex(tagline => cast_text.includes(tagline));
+      if (foundIndex !== -1) {
+          console.log(`The element "${taglinesArray[foundIndex]}" appears in the cast_text at position ${foundIndex} in taglinesArray.`);
+          //enforce infuencer to only include 1 tagline in the cast, the campaign tagline, any other taglines will be ignored
+          const tagline = taglinesArray[foundIndex];
 
-  if (foundIndex !== -1) {
-      console.log(`The element "${taglinesArray[foundIndex]}" appears in the cast_text at position ${foundIndex} in taglinesArray.`);
-      //enforce infuencer to only include 1 tagline in the cast, the campaign tagline, any other taglines will be ignored
-      const tagline = taglinesArray[foundIndex];
-
-      let features = {
-        created_at,
-        humantime:  data.timestamp,
-        action: "cast",  
-        action_type: "tagline",  // 23
-        user_fid: data.author.fid,
-        user_username: data.author.username,
-        user_followers,
-        cast_hash: data.hash, //'0xe556bc94a69df048385d4be2f304e10c9bb0e78f'
-        cast_text,
-        tagline,
-      };
+          let features = {
+            created_at,
+            humantime:  data.timestamp,
+            action: "cast",  
+            action_type: "tagline",  // 23
+            user_fid: data.author.fid,
+            user_username: data.author.username,
+            user_followers,
+            cast_hash: data.hash, //'0xe556bc94a69df048385d4be2f304e10c9bb0e78f'
+            cast_text,
+            tagline,
+          };
 
 
-      // let for_sc = [created_at, 23, data.author.fid, data.hash, tagline, user_followers ]
-      let for_sc = {
-          data: [],
-          created_at,
-          code: 23,
-          user_fid: data.author.fid,
-          user_followers,
-          cast_hash: data.hash, 
-          replyTo_cast_hash:  "0x0000000000000000000000000000000000000000" ,
-          embeded_string: tagline,
-          nonce: 0,
-          processed: 0
-      };
-      
-      featuresArray.push(features);
-      for_scArray.push(for_sc);
-  } else {
-      console.log("No element from taglinesArray appears in the cast_text.");
+          // let for_sc = [created_at, 23, data.author.fid, data.hash, tagline, user_followers ]
+          let for_sc = {
+              data: [],
+              created_at,
+              code: 23,
+              user_fid: data.author.fid,
+              user_followers,
+              cast_hash: data.hash, 
+              replyTo_cast_hash:  "0x0000000000000000000000000000000000000000" ,
+              embeded_string: tagline,
+              nonce: 0,
+              processed: 0
+          };
+          
+          featuresArray.push(features);
+          for_scArray.push(for_sc);
+      } else {
+          console.log("No element from taglinesArray appears in the cast_text.");
+      }
+
   }
-
-
 
 
       
@@ -998,9 +1005,7 @@ const handle_CastCreated = async (data, created_at, campaign_fids, campaign_urls
 
   // NOTES
   // A> if company account fid is in the mentioned_profiles then credit the user | Number Followers
-
   // B> NEXT VERSION Keep hold of the cast_hash and cast_author_fid for future reference | if someone reacts to the cast then points should be allocated to the user that casted the cast
-  
   // C> if the parent_hash is not null and it is a copmany cast hash (STORE ALL COMPNAY CAST HASHES) and parent_author fid is the company account then
   // 1. credit the user    2. NEXT VERSION keep analytics about the most succesful casts
 
@@ -1063,9 +1068,12 @@ const getUserInfo_withFids_Bulk = async (fidsARARY=[620429,3,5]) => {
 
 //NOTE: AT THE MOMENT NEYNAR WEBHOOKS DO NOT SUPPORT cast.deleted
 
-
-
 //#endregion
+
+
+
+
+
 
 
 
@@ -1073,30 +1081,63 @@ const getUserInfo_withFids_Bulk = async (fidsARARY=[620429,3,5]) => {
 // Depending on the webhook secret we will determine at verifyWebhookSignature whether to use smart contract on Base or Base Sepolia per request
 setupContracts();   
 
-//#region Smart Contract Functions
+//#region Smart Contracts Functions
 
-const getPendingCampaigns = async () => {
-	const pendingCampaignUIDs =  await CampaignManager_admin.get_pendingCampaignUIDs();
-  const pendingCampaignUIDs_Numbers = pendingCampaignUIDs.map(uid => `${uid}`);
-	// console.log(`pendingCampaignUIDs_Numbers: `,pendingCampaignUIDs_Numbers);
-	return pendingCampaignUIDs_Numbers;
+
+
+
+// DELETE FROM HERE
+// const getPendingCampaigns = async () => {
+// 	const pendingCampaignUIDs =  await CampaignManager_admin.get_pendingCampaignUIDs();
+//   const pendingCampaignUIDs_Numbers = pendingCampaignUIDs.map(uid => `${uid}`);
+// 	// console.log(`pendingCampaignUIDs_Numbers: `,pendingCampaignUIDs_Numbers);
+// 	return pendingCampaignUIDs_Numbers;
+// }
+
+// const getActiveCampaignUIDs = async () => {
+// 	const activeCampaignUIDs =  await CampaignManager_admin.get_activeCampaignUIDs();
+//   const activeCampaignUIDs_Numbers = activeCampaignUIDs.map(uid => `${uid}`);
+// 	// console.log(`activeCampaignUIDs_Numbers: `,activeCampaignUIDs_Numbers);
+// 	return activeCampaignUIDs_Numbers;
+// }
+// const get_Campaign_Specs = async (campaign_uuid) => {
+// 	const campaigneSpecs =  await CampaignManager_admin.getCampaign(campaign_uuid);
+// 	console.log(`campaigneSpecs: `,campaigneSpecs);
+// 	return campaigneSpecs;
+// }
+// DELETE TO HERE
+
+
+
+
+
+
+//#region CampaignManager
+const getCampaign_Infuencers_From_Fid = async (campaign_fid) => {
+  const campaign_registered_infuencers_fids =  await CampaignManager_admin.getCampaign_Infuencers_FromFid(campaign_fid);
+  const campaign_registered_infuencers_readable = campaign_registered_infuencers_fids.map(fid => `${fid}`);
+  console.log(`campaign_registered_infuencers_readable: `,campaign_registered_infuencers_readable);
+  return campaign_registered_infuencers_readable;
+}
+//#endregion CampaignManager
+
+
+
+
+//#region CampaignAssets
+const get_embeds = async () => {
+	const embeds =  await CampaignAssets_admin.get_embeds();
+	console.log(`get_embeds embeds: `,embeds);
+	return embeds;
 }
 
-const getActiveCampaignUIDs = async () => {
-	const activeCampaignUIDs =  await CampaignManager_admin.get_activeCampaignUIDs();
-  const activeCampaignUIDs_Numbers = activeCampaignUIDs.map(uid => `${uid}`);
-	// console.log(`activeCampaignUIDs_Numbers: `,activeCampaignUIDs_Numbers);
-	return activeCampaignUIDs_Numbers;
-}
-const get_Campaign_Specs = async (campaign_uuid) => {
-	const campaigneSpecs =  await CampaignManager_admin.getCampaign(campaign_uuid);
-	console.log(`campaigneSpecs: `,campaigneSpecs);
-	return campaigneSpecs;
+const get_tagLines = async () => {
+	const tagLines =  await CampaignAssets_admin.get_tagLines();
+	console.log(`get_tagLines tagLines : `,tagLines );
+	return tagLines ;
 }
 
 
-
-// Importamt
 const getActiveCampaignFIDs = async () => {
 	const activeCampaignFIDs =  await CampaignAssets_admin.get_activeCampaignFIDs();
   const activeCampaignFIDs_readable = activeCampaignFIDs.map(fid => `${fid}`);
@@ -1104,15 +1145,22 @@ const getActiveCampaignFIDs = async () => {
 	return activeCampaignFIDs_readable;
 }
 
-const getCampaign_Infuencers_From_Fid = async (campaign_fid) => {
-	const campaign_registered_infuencers_fids =  await CampaignManager_admin.getCampaign_Infuencers_FromFid(campaign_fid);
-  const campaign_registered_infuencers_readable = campaign_registered_infuencers_fids.map(fid => `${fid}`);
-	console.log(`campaign_registered_infuencers_readable: `,campaign_registered_infuencers_readable);
-	return campaign_registered_infuencers_readable;
-}
+// const getCampaign_UUID_FID_forEmbed = async (embed_string) => {
+// 	const {campaign_uuid , campaign_fid} =  await CampaignAssets_admin.campaignEmbed_string(embed_string);
+// 	console.log(`getCampaign_UUID_FID_forEmbed campaign_uuid: ${campaign_uuid} campaign_fid: ${campaign_fid}`);
+// 	return `${campaign_fid}`;
+// }
+
+// const getCampaign_UUID_FID_forTagline = async (embed_string) => {
+// 	const {campaign_uuid , campaign_fid} =  await CampaignAssets_admin.campaignTagLine_string(embed_string);
+// 	console.log(`getCampaign_UUID_FID_forTagline campaign_uuid: ${campaign_uuid} campaign_fid: ${campaign_fid}`);
+// 	return `${campaign_fid}`;
+// }
+
+//#endregion CampaignAssets
 
 
-
+//#region SquawkProcessor
 // ArrayOfFreshSquawks is  [ Squawk, Squawk, Squawk ]   where Squawk is a struct / object
 const recordData_on_SquawkProcessor = async (ArrayOfFreshSquawks) => {
 	return new Promise (async (resolve,reject) => {
@@ -1164,9 +1212,10 @@ const getSquawkBoxElementRange = async () => {
 	console.log(`getSquawkBoxElementRange is run`);
 	return SquawkBox_Data;
 }
+//#endregion SquawkProcessor
 
 
-//#endregion Smart Contract Functions
+//#endregion Smart Contracts Functions
 
 
 

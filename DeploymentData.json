@@ -11,7 +11,7 @@
     "base-sepolia": {
       "networkName": "base-sepolia",
       "chainId": 84532,
-      "address": "0x9b98daC2884676098d22c55991364b1d4517845a",
+      "address": "0xBaba97E4712Be21bB32C441fA45F4ACFbC404292",
       "constructorArguments": [],
       "value": "0",
       "timestamp": ""
@@ -19,7 +19,7 @@
     "base": {
       "networkName": "base",
       "chainId": 8453,
-      "address": "0x9b98daC2884676098d22c55991364b1d4517845a",
+      "address": "0xBaba97E4712Be21bB32C441fA45F4ACFbC404292",
       "constructorArguments": [],
       "value": "0",
       "timestamp": ""
@@ -37,7 +37,7 @@
     "base-sepolia": {
       "networkName": "base-sepolia",
       "chainId": 84532,
-      "address": "0x970C4bbFfCeED69EC3ff4b7D4a6848F561Ca993a",
+      "address": "0x3C9536039794a8F9F7d3CB1385Be35A802E6b45d",
       "constructorArguments": [],
       "value": "0",
       "timestamp": ""
@@ -45,7 +45,7 @@
     "base": {
       "networkName": "base",
       "chainId": 8453,
-      "address": "0x970C4bbFfCeED69EC3ff4b7D4a6848F561Ca993a",
+      "address": "0x3C9536039794a8F9F7d3CB1385Be35A802E6b45d",
       "constructorArguments": [],
       "value": "0",
       "timestamp": ""
@@ -63,7 +63,7 @@
     "base-sepolia": {
       "networkName": "base-sepolia",
       "chainId": 84532,
-      "address": "0xEb0052313DdEE0C670D5780406cAD7dD5017630b",
+      "address": "0x0535ACe599F56aAa64Aa80F7f1694507e9074AB1",
       "constructorArguments": [],
       "value": "0",
       "timestamp": ""
@@ -71,7 +71,7 @@
     "base": {
       "networkName": "base",
       "chainId": 8453,
-      "address": "0xEb0052313DdEE0C670D5780406cAD7dD5017630b",
+      "address": "0x0535ACe599F56aAa64Aa80F7f1694507e9074AB1",
       "constructorArguments": [],
       "value": "0",
       "timestamp": ""
@@ -89,7 +89,7 @@
     "base-sepolia": {
       "networkName": "base-sepolia",
       "chainId": 84532,
-      "address": "0xb14B3838bfdb86618B302555D4b9BEd9480c12a8",
+      "address": "0xF5125C4e14a26724dc08541fEFdE2F1F0D1A0282",
       "constructorArguments": [],
       "value": "0",
       "timestamp": ""
@@ -97,7 +97,7 @@
     "base": {
       "networkName": "base",
       "chainId": 8453,
-      "address": "0xb14B3838bfdb86618B302555D4b9BEd9480c12a8",
+      "address": "0xF5125C4e14a26724dc08541fEFdE2F1F0D1A0282",
       "constructorArguments": [],
       "value": "0",
       "timestamp": ""
