@@ -59,3 +59,15 @@ Subscriptions as submitted during New Campaign Creation at the Spark Website
 ![alt text](image-1.png)
 
 ---
+
+## Installation
+
+```
+$npm install
+```
+
+## Run
+
+```
+$npm start
+```
