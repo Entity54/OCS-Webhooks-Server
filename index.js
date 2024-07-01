@@ -74,7 +74,7 @@ const setupContracts = async () => {
 			chain.contracts =
 			{
 				CampaignManager: new ethers.Contract( deploymentData["CampaignManager"][chain.chainName]["address"] , CampaignManager_raw.abi , chain.chainWallet ), 
-				InfuencersManager: new ethers.Contract( deploymentData["InfuencersManager"][chain.chainName]["address"] , InfuencersManager_raw.abi , chain.chainWallet ),
+				InfuencersManager: new ethers.Contract( deploymentData["InfluencersManager"][chain.chainName]["address"] , InfuencersManager_raw.abi , chain.chainWallet ),
 				CampaignAssets: new ethers.Contract( deploymentData["CampaignAssets"][chain.chainName]["address"] , CampaignAssets_raw.abi , chain.chainWallet ),
 				SquawkProcessor: new ethers.Contract( deploymentData["SquawkProcessor"][chain.chainName]["address"] , SquawkProcessor_raw.abi , chain.chainWallet ),
 			};
